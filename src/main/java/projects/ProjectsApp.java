@@ -3,7 +3,10 @@ package projects;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
+
+import projects.dao.ProjectDao;
 import projects.entity.Project;
 import projects.exception.*;
 import projects.service.ProjectService;
@@ -11,10 +14,14 @@ import projects.service.ProjectService;
 public class ProjectsApp {
 	private Scanner scanner = new Scanner(System.in);
 	private ProjectService projectService = new ProjectService();
-
+	private Project curProject;
+	
+	
 //@formatter:off
 private List<String> operations = List.of(
-		"1) Add a project"
+		"1) Add a project",
+		"2) List projects",
+		"3) Select a project"
 		);
 //@formatter:on
 
@@ -36,6 +43,13 @@ private List<String> operations = List.of(
 				case 1:
 					createProject();
 					break;
+				case 2:
+					listProjects();
+					break;
+				case 3:
+					selectProject();
+					break;
+				
 				default:
 					System.out.println("\n" + selection + " is not a valid selection.");
 				}
@@ -43,6 +57,26 @@ private List<String> operations = List.of(
 				System.out.println("\n Error: " + e + " Try Again. ");
 			}
 		}
+	}
+
+//	private void fetchProjectById(Integer projectId) {
+//		Optional<Project> op =  ProjectDao.fetchProjectById(projectId);
+//	}
+	
+	private void selectProject() {
+		listProjects();
+		Integer projectId = getIntInput("Enter a project ID to select a project");
+	/* Unselect the current project. */
+		curProject = null;
+		curProject = projectService.fetchProjectById(projectId);
+	}
+
+	private void listProjects() {
+List<Project> projects = projectService.fetchAllProjects();
+
+System.out.println("\nProjects");
+
+projects.forEach(project -> System.out.println("   " + project.getProjectId() + " : " + project.getProjectName()));
 	}
 
 	private void createProject() {
@@ -116,6 +150,13 @@ private List<String> operations = List.of(
 
 		operations.forEach(line -> System.out.println(" " + line));
 
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nYou are not working with a project.");
+		} else {
+			System.out.println("\nYou are working with project " + curProject);
+			
+		}
+		
 	}
 
 	@Override
