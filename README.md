@@ -1,6 +1,7 @@
 # Week07CodingProject
 # Week08
 # Week09
+# Week10
 Exercises
 Complete these exercises as directed. If you get hopelessly stuck, please see the "Solutions" section below.
 In these exercises, you will often be told to call a method prior to creating it. This is a good approach. You set up the return type by assigning it to a variable and setting up the parameters. Then, Eclipse can correctly create the method.
